@@ -34,8 +34,19 @@ def main():
     """こうかとん"""
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_img2 = pg.transform.flip(kk_img, True, False)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)  # 練習３：こうかとんの初期座標を設定する
+    direction = {  #追加機能1: 辞書
+        (-5, -5): pg.transform.rotozoom(kk_img, -45, 1.0),
+        (0, -5): pg.transform.rotozoom(kk_img2, 90, 1.0),
+        (+5, -5): pg.transform.rotozoom(kk_img2, -45, 1.0),
+        (+5, 0): pg.transform.rotozoom(kk_img2, 0, 1.0),
+        (+5, +5): pg.transform.rotozoom(kk_img2, 45, 1.0),
+        (0, +5): pg.transform.rotozoom(kk_img2, -90, 1.0),
+        (-5, +5): pg.transform.rotozoom(kk_img, 45, 1.0),
+        (-5, 0): pg.transform.rotozoom(kk_img, 0, 1.0),
+        }
 
     """ばくだん"""
     bd_img = pg.Surface((20, 20))  # 練習１：爆弾Surfaceを作成する
@@ -63,14 +74,18 @@ def main():
         """こうかとん"""
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
+        direct = (-5, 0)
         for key, mv in delta.items():
             if key_lst[key]:
-                sum_mv[0] += mv[0]  #練習3: 縦
-                sum_mv[1] += mv[1]  #練習3: 横
+                sum_mv[0] += mv[0]  #練習3: 横
+                sum_mv[1] += mv[1]  #練習3: 縦
+                direct = (mv[0], mv[1])  #追加機能1: 向き
         kk_rct.move_ip(sum_mv[0], sum_mv[1])  #Rectで移動
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  #練習4: こうかとんがはみ出た時の処理
-        screen.blit(kk_img, kk_rct)  #練習3: 移動後の座標
+        
+        screen.blit(direction[direct], kk_rct)  # 練習３, 追加機能1：移動後の座標に表示させる
+        
 
         """ばくだん"""
         bd_rct.move_ip(vx, vy)  # 練習２：爆弾を移動

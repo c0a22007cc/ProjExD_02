@@ -40,6 +40,7 @@ def main():
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)  # 練習３：こうかとんの初期座標を設定する
     direction = {  #追加機能1: 辞書
+        (0, 0): pg.transform.rotozoom(kk_img, 0, 1.0),
         (-5, -5): pg.transform.rotozoom(kk_img, -45, 1.0),
         (0, -5): pg.transform.rotozoom(kk_img2, 90, 1.0),
         (+5, -5): pg.transform.rotozoom(kk_img2, -45, 1.0),
@@ -89,7 +90,7 @@ def main():
                 if key_lst[key]:
                     sum_mv[0] += mv[0]  #練習3: 横
                     sum_mv[1] += mv[1]  #練習3: 縦
-                    direct = (mv[0], mv[1])  #追加機能1: 向き
+                    direct = (sum_mv[0], sum_mv[1])  #追加機能1: 向き
         kk_rct.move_ip(sum_mv[0], sum_mv[1])  #Rectで移動
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  #練習4: こうかとんがはみ出た時の処理

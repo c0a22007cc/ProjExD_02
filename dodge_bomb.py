@@ -43,9 +43,9 @@ def main():
         (0, 0): pg.transform.rotozoom(kk_img, 0, 1.0),
         (-5, -5): pg.transform.rotozoom(kk_img, -45, 1.0),
         (0, -5): pg.transform.rotozoom(kk_img2, 90, 1.0),
-        (+5, -5): pg.transform.rotozoom(kk_img2, -45, 1.0),
+        (+5, -5): pg.transform.rotozoom(kk_img2, 45, 1.0),
         (+5, 0): pg.transform.rotozoom(kk_img2, 0, 1.0),
-        (+5, +5): pg.transform.rotozoom(kk_img2, 45, 1.0),
+        (+5, +5): pg.transform.rotozoom(kk_img2, -45, 1.0),
         (0, +5): pg.transform.rotozoom(kk_img2, -90, 1.0),
         (-5, +5): pg.transform.rotozoom(kk_img, 45, 1.0),
         (-5, 0): pg.transform.rotozoom(kk_img, 0, 1.0),
@@ -94,7 +94,6 @@ def main():
         kk_rct.move_ip(sum_mv[0], sum_mv[1])  #Rectで移動
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  #練習4: こうかとんがはみ出た時の処理
-        
         screen.blit(direction[direct], kk_rct)  # 練習３, 追加機能1：移動後の座標に表示させる
         if hantei == True:
             screen.blit(kk_img3, kk_rct)

@@ -35,6 +35,8 @@ def main():
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_img2 = pg.transform.flip(kk_img, True, False)
+    kk_img3 = pg.image.load("ex02/fig/8.png")
+    kk_img3 = pg.transform.rotozoom(kk_img3, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = (900, 400)  # 練習３：こうかとんの初期座標を設定する
     direction = {  #追加機能1: 辞書
@@ -59,13 +61,20 @@ def main():
 
     clock = pg.time.Clock()
     tmr = 0
-
+    hantei = False
+    count = 0
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
         
         if kk_rct.colliderect(bd_rct):  #ぶつかる
+            hantei = True
+        
+        if hantei == True:
+            count += 1
+
+        if count >= 100:
             print("ゲームオーバー")
             return
         
@@ -75,16 +84,19 @@ def main():
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         direct = (-5, 0)
-        for key, mv in delta.items():
-            if key_lst[key]:
-                sum_mv[0] += mv[0]  #練習3: 横
-                sum_mv[1] += mv[1]  #練習3: 縦
-                direct = (mv[0], mv[1])  #追加機能1: 向き
+        if hantei == False:
+            for key, mv in delta.items():
+                if key_lst[key]:
+                    sum_mv[0] += mv[0]  #練習3: 横
+                    sum_mv[1] += mv[1]  #練習3: 縦
+                    direct = (mv[0], mv[1])  #追加機能1: 向き
         kk_rct.move_ip(sum_mv[0], sum_mv[1])  #Rectで移動
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  #練習4: こうかとんがはみ出た時の処理
         
         screen.blit(direction[direct], kk_rct)  # 練習３, 追加機能1：移動後の座標に表示させる
+        if hantei == True:
+            screen.blit(kk_img3, kk_rct)
         
 
         """ばくだん"""

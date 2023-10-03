@@ -12,6 +12,20 @@ delta = {  #練習3: 移動量の辞書
     pg.K_RIGHT: (+5, 0)
 }
 
+def check_bound(obj_rct: pg.Rect):
+    """
+    引数: Rect
+    戻り値: タプル(横の判定, 縦の判定)
+    画面内: True, 画面外: False
+    
+    """
+    hori, vert = True, True
+    if obj_rct.left < 0 or WIDTH < obj_rct.right:#練習4: 横
+        hori = False
+    if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:#練習4: 横
+        vert = False
+    return hori, vert
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -50,11 +64,17 @@ def main():
                 sum_mv[0] += mv[0]  #練習3: 縦
                 sum_mv[1] += mv[1]  #練習3: 横
         kk_rct.move_ip(sum_mv[0], sum_mv[1])  #Rectで移動
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  #練習4: こうかとんがはみ出た時の処理
         screen.blit(kk_img, kk_rct)  #練習3: 移動後の座標
 
         """ばくだん"""
-
         bd_rct.move_ip(vx, vy)  # 練習２：爆弾を移動
+        holi, vert = check_bound(bd_rct)
+        if not holi:
+            vx *= -1
+        if not vert:
+            vy *= -1
         screen.blit(bd_img, bd_rct)  #練習1: blit
         pg.display.update()
         tmr += 1
